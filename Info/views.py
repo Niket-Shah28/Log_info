@@ -21,9 +21,9 @@ class Register(GenericAPIView):
         print(user)
         if user.is_valid():
             user.save()
-            return Response("Successfully Registered")
+            return Response("Successfully Registered",status=status.HTTP_202_ACCEPTED)
         else:
-            return Response("Error Occured")
+            return Response("Error Occured",status=status.HTTP_400_BAD_REQUEST)
 
 @csrf_exempt
 @api_view(['POST',])
@@ -40,9 +40,9 @@ def signin(request):
             info.user=USER.objects.get(email=request.user)
             info.Time_logged=timezone.now()
             info.save()
-            return Response("Logged In")
+            return Response("Logged In",status=status.HTTP_202_ACCEPTED)
         else:
-            return Response("Login Failed")
+            return Response("Login Failed",status=status.HTTP_400_BAD_REQUEST)
 
 
 
@@ -54,13 +54,13 @@ def signout(request):
     last.Time_logged_out=timezone.now()
     last.save()
     logout(request)
-    return JsonResponse("Logged Out Successfully",safe=False)
+    return JsonResponse("Logged Out Successfully",safe=False,status=status.HTTP_202_ACCEPTED)
 
 
 def check_activity(request):
     info=Info.objects.all()
     data=list(info.values())
-    return JsonResponse(data,safe=False)
+    return JsonResponse(data,safe=False,status=status.HTTP_202_ACCEPTED)
 
 
 
